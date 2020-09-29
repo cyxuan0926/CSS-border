@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+   <input type="text" id="cy">
+   <button>搜索</button>
+   <a href="javascript:alert(&#x27;XSS&#x27;)">跳转...</a>
+   <div id="am">
+   </div>
+   <script>
+    //  unescape可以对 escape编码的进行解码 使用decodeURLComponent encodeURLComponent
+    // escape encodeURL encodeURLComponent 不会对ASCII字母和数字进行编码 也不会对这些 ASCII 标点符号进行编码： - _ . ! ~ * ' ( ) 
+    // 正则表达式的子表达式：通过()括起来 如果需要使用这两个字符 需要使用转义\(\)
+
+      let a
+      function getParameter(words) {
+        a = unescape(words['keyword'])
+      }
+      cy.onchange = function(e) {
+        console.log(e.target.value)
+      }
+
+      window.onload = function() {
+          let url = window.location.href
+          const protocol = window.location.protocol
+          const host = window.location.host
+          const port = window.location.host
+          const pathName = window.location.pathname
+          const hash = window.location.hash
+          const search = window.location.search
+          const params = search.substring(1)
+          const temp = params.split('&')
+
+          let result = {}
+
+          temp.forEach(item => {
+            const temp = item.split('=')
+
+            result = {
+              ...result,
+              [temp[0]]: temp[1]
+            }
+          })
+          getParameter(result)
+          cy.value = a
+          console.log(a)
+          am.innerHTML = `您搜索的关键字是：${ a }`
+      }
+   </script>
+  </body>
+</html>
